@@ -1,8 +1,8 @@
 <script>
   import {
     // averageStore,
-    // itemStore,
-    // nameStore,
+    studentNameStore,
+    titleStore,
     studentResults,
     averageResults,
   } from "../../stores/dataStore";
@@ -15,6 +15,7 @@
   let averageStore;
   let studentObj;
   let nameStore;
+  let title;
   // export let test_names = [];
 
   const submitForm = async () => {
@@ -26,10 +27,15 @@
       );
       const data = await response.json();
       nameStore = data[0];
+      console.log("nameStore: ", nameStore);
+      // title
+      titleStore.set(nameStore["Name"]);
+      // console.log("title: ", title);
       averageStore = data[1];
       const [studentObj] = data.filter((item) => item.id === studentid);
       // itemStore.set(first);
       console.log("studentObj: ", studentObj);
+      studentNameStore.set(studentObj["Name"]);
 
       const avgpoints = Object.keys(nameStore).map((key, index) => ({
         myX: +key,
@@ -97,9 +103,9 @@
       </label>
       <div class="md:flex md:items-center">
         <div class="md:w-1/3" />
-        <div class="md:w-2/3">
+        <div class="md:w-2/3 py-3">
           <button
-            class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+            class="shadow bg-purple-600 hover:bg-purple-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded "
             type="submit"
           >
             Submit

@@ -1,5 +1,10 @@
 <script>
-  import { studentResults, averageResults } from "../../stores/dataStore";
+  import {
+    studentResults,
+    averageResults,
+    titleStore,
+    studentNameStore,
+  } from "../../stores/dataStore";
   import * as Pancake from "@sveltejs/pancake";
   import points from "./points.js";
   import points2 from "./points2.js";
@@ -8,7 +13,7 @@
   console.log("pointResults: ", $studentResults);
 </script>
 
-<h1>Pancake chart</h1>
+<h1>{$titleStore}: {$studentNameStore}</h1>
 
 {#if $studentResults && $averageResults}
   <div class="chart">
