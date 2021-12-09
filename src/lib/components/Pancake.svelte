@@ -1,68 +1,71 @@
 <script>
-  import { averageStore, nameStore, itemStore } from "../../stores/dataStore";
+  import { studentResults, averageResults } from "../../stores/dataStore";
   import * as Pancake from "@sveltejs/pancake";
   import points from "./points.js";
   import points2 from "./points2.js";
+
+  // console.log("js points: ", points);
+  console.log("pointResults: ", $studentResults);
 </script>
 
 <h1>Pancake chart</h1>
 
-<div class="chart">
-  <Pancake.Chart x1={1979} x2={2016} y1={0} y2={8}>
-    <Pancake.Grid horizontal count={5} let:value let:first>
-      <div class="grid-line horizontal" class:first><span>{value}</span></div>
-    </Pancake.Grid>
+{#if $studentResults && $averageResults}
+  <div class="chart">
+    <Pancake.Chart x1={1} x2={30} y1={1} y2={100}>
+      <Pancake.Grid horizontal count={10} let:value let:first>
+        <div class="grid-line horizontal" class:first><span>{value}</span></div>
+      </Pancake.Grid>
 
-    <Pancake.Grid vertical count={10} let:value>
-      <div class="grid-line vertical" />
-      <span class="year-label">{value}</span>
-    </Pancake.Grid>
+      <Pancake.Grid vertical count={5} let:value>
+        <div class="grid-line vertical" />
+        <span class="year-label">{value}</span>
+      </Pancake.Grid>
 
-    <Pancake.Svg>
-      <Pancake.SvgScatterplot
-        data={points}
-        x={(d) => d.myX}
-        y={(d) => d.myY}
-        let:d
-      >
-        <path class="data" {d} />
-      </Pancake.SvgScatterplot>
+      <Pancake.Svg>
+        <Pancake.SvgScatterplot
+          data={$studentResults}
+          x={(d) => d.myX}
+          y={(d) => d.myY}
+          let:d
+        >
+          <path class="data" {d} />
+        </Pancake.SvgScatterplot>
 
-      <Pancake.SvgLine data={points} x={(d) => d.myX} y={(d) => d.myY} let:d>
-        <path class="linegraph" {d} />
-      </Pancake.SvgLine>
+        <Pancake.SvgLine
+          data={$studentResults}
+          x={(d) => d.myX}
+          y={(d) => d.myY}
+          let:d
+        >
+          <path class="linegraph" {d} />
+        </Pancake.SvgLine>
 
-      <Pancake.SvgScatterplot
-        data={points2}
-        x={(d) => d.myX}
-        y={(d) => d.myY}
-        let:d
-      >
-        <path class="data" {d} />
-      </Pancake.SvgScatterplot>
+        <Pancake.SvgScatterplot
+          data={$averageResults}
+          x={(d) => d.myX}
+          y={(d) => d.myY}
+          let:d
+        >
+          <path class="avgdata" {d} />
+        </Pancake.SvgScatterplot>
 
-      <Pancake.SvgLine data={points2} x={(d) => d.myX} y={(d) => d.myY} let:d>
-        <path class="linegraph" {d} />
-      </Pancake.SvgLine>
-    </Pancake.Svg>
-  </Pancake.Chart>
-</div>
-<br />
-nameStore:
-<br />
-{JSON.stringify($nameStore)}
-<br />
-itemStore
-<br />
-{JSON.stringify($itemStore)}
-<br />
-averageStore
-<br />
-{JSON.stringify($averageStore)}
+        <Pancake.SvgLine
+          data={$averageResults}
+          x={(d) => d.myX}
+          y={(d) => d.myY}
+          let:d
+        >
+          <path class="avglinegraph" {d} />
+        </Pancake.SvgLine>
+      </Pancake.Svg>
+    </Pancake.Chart>
+  </div>
+{/if}
 
 <style>
   .chart {
-    height: 200px;
+    height: 500px;
     padding: 3em 0 2em 2em;
     margin: 0 0 36px 0;
   }
@@ -108,7 +111,15 @@ averageStore
   }
 
   path.data {
-    stroke: rgb(171, 0, 214);
+    stroke: rgb(55, 75, 255);
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-width: 6px;
+    fill: none;
+  }
+
+  path.avgdata {
+    stroke: rgb(191, 0, 0);
     stroke-linejoin: round;
     stroke-linecap: round;
     stroke-width: 6px;
@@ -116,7 +127,7 @@ averageStore
   }
 
   path.highlight {
-    stroke: rgb(171, 0, 214);
+    stroke: rgb(214, 0, 0);
     stroke-linejoin: round;
     stroke-linecap: round;
     stroke-width: 20px;
@@ -124,7 +135,15 @@ averageStore
   }
 
   path.linegraph {
-    stroke: green;
+    stroke: rgb(94, 198, 254);
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-width: 2px;
+    fill: none;
+  }
+
+  path.avglinegraph {
+    stroke: rgb(128, 0, 70);
     stroke-linejoin: round;
     stroke-linecap: round;
     stroke-width: 2px;

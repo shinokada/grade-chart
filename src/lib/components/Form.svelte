@@ -1,11 +1,20 @@
 <script>
-  import { averageStore, itemStore, nameStore } from "../../stores/dataStore";
+  import {
+    // averageStore,
+    // itemStore,
+    // nameStore,
+    studentResults,
+    averageResults,
+  } from "../../stores/dataStore";
 
   // let data;
   export let googlesheet;
   export let studentid;
   export let itemdata = [1];
   export let error;
+  let averageStore;
+  let studentObj;
+  let nameStore;
   // export let test_names = [];
 
   const submitForm = async () => {
@@ -16,15 +25,27 @@
         `https://opensheet-okadashinichi.vercel.app/${googleid}/test2`
       );
       const data = await response.json();
-      console.log("data: ", data);
-      console.log("id: ", studentid);
-      // test_names = data[0];
-      nameStore.set(data[0]);
-      averageStore.set(data[1]);
-      const [first] = data.filter((item) => item.id === studentid);
-      itemStore.set(first);
-      // console.log("test_names: ", test_names);
-      // console.log("itemdata: ", itemdata);
+      nameStore = data[0];
+      averageStore = data[1];
+      const [studentObj] = data.filter((item) => item.id === studentid);
+      // itemStore.set(first);
+      console.log("studentObj: ", studentObj);
+
+      const avgpoints = Object.keys(nameStore).map((key, index) => ({
+        myX: +key,
+        myY: +averageStore[key],
+      }));
+      avgpoints.splice(-2);
+      averageResults.set(avgpoints);
+      console.log("averageResults: ", $averageResults);
+
+      const points = Object.keys(nameStore).map((key, index) => ({
+        myX: +key,
+        myY: +studentObj[key],
+      }));
+      points.splice(-2);
+      studentResults.set(points);
+      console.log("studentResults: ", $studentResults);
     } catch (err) {
       error = err;
     }
