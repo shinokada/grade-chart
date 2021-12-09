@@ -1,31 +1,21 @@
 <script>
-  let name = "world";
-  let a = 1;
-  let b = 2;
+  import Chart from "svelte-frappe-charts";
+  import Form from "$lib/components/Form.svelte";
+  import Capcake from "$lib/components/Pancake.svelte";
+  import Frappe from "$lib/components/Frappe.svelte";
+
+  let frappe_data = {
+    labels: ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"],
+    datasets: [
+      {
+        values: [10, 12, 3, 9, 8, 15, 9],
+      },
+    ],
+  };
 </script>
 
-<input bind:value={name} />
-
-<h1>Hello {name}!</h1>
-
-<label>
-  <input type="number" bind:value={a} min="0" max="10" />
-  <input type="range" bind:value={a} min="0" max="10" />
-</label>
-
-<label>
-  <input type="number" bind:value={b} min="0" max="10" />
-  <input type="range" bind:value={b} min="0" max="10" />
-</label>
-
-<p>{a} + {b} = {a + b}</p>
-
-<style>
-  label {
-    display: flex;
-  }
-  input,
-  p {
-    margin: 6px;
-  }
-</style>
+<h1 class="font-bold text-indigo-500">Hello</h1>
+<Chart data={frappe_data} type="line" />
+<Form />
+<Capcake />
+<Frappe />
