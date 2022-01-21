@@ -6,67 +6,67 @@
     studentNameStore,
   } from "../../stores/dataStore";
   import * as Pancake from "@sveltejs/pancake";
-  import points from "./points.js";
-  import points2 from "./points2.js";
-
-  // console.log("js points: ", points);
-  console.log("pointResults: ", $studentResults);
+  // console.log("pointResults: ", $studentResults);
 </script>
 
-<h1>{$titleStore}: {$studentNameStore}</h1>
+<div class="m-4">
+  <h1>{$titleStore}: {$studentNameStore}</h1>
 
-{#if $studentResults && $averageResults}
-  <div class="chart">
-    <Pancake.Chart x1={1} x2={30} y1={1} y2={100}>
-      <Pancake.Grid horizontal count={10} let:value let:first>
-        <div class="grid-line horizontal" class:first><span>{value}</span></div>
-      </Pancake.Grid>
+  {#if $studentResults && $averageResults}
+    <div class="chart">
+      <Pancake.Chart x1={1} x2={30} y1={1} y2={100}>
+        <Pancake.Grid horizontal count={10} let:value let:first>
+          <div class="grid-line horizontal" class:first>
+            <span>{value}</span>
+          </div>
+        </Pancake.Grid>
 
-      <Pancake.Grid vertical count={5} let:value>
-        <div class="grid-line vertical" />
-        <span class="year-label">{value}</span>
-      </Pancake.Grid>
+        <Pancake.Grid vertical count={5} let:value>
+          <div class="grid-line vertical" />
+          <span class="year-label">{value}</span>
+        </Pancake.Grid>
 
-      <Pancake.Svg>
-        <Pancake.SvgScatterplot
-          data={$studentResults}
-          x={(d) => d.myX}
-          y={(d) => d.myY}
-          let:d
-        >
-          <path class="data" {d} />
-        </Pancake.SvgScatterplot>
+        <Pancake.Svg>
+          <Pancake.SvgScatterplot
+            data={$studentResults}
+            x={(d) => d.myX}
+            y={(d) => d.myY}
+            let:d
+          >
+            <path class="data" {d} />
+          </Pancake.SvgScatterplot>
 
-        <Pancake.SvgLine
-          data={$studentResults}
-          x={(d) => d.myX}
-          y={(d) => d.myY}
-          let:d
-        >
-          <path class="linegraph" {d} />
-        </Pancake.SvgLine>
+          <Pancake.SvgLine
+            data={$studentResults}
+            x={(d) => d.myX}
+            y={(d) => d.myY}
+            let:d
+          >
+            <path class="linegraph" {d} />
+          </Pancake.SvgLine>
 
-        <Pancake.SvgScatterplot
-          data={$averageResults}
-          x={(d) => d.myX}
-          y={(d) => d.myY}
-          let:d
-        >
-          <path class="avgdata" {d} />
-        </Pancake.SvgScatterplot>
+          <Pancake.SvgScatterplot
+            data={$averageResults}
+            x={(d) => d.myX}
+            y={(d) => d.myY}
+            let:d
+          >
+            <path class="avgdata" {d} />
+          </Pancake.SvgScatterplot>
 
-        <Pancake.SvgLine
-          data={$averageResults}
-          x={(d) => d.myX}
-          y={(d) => d.myY}
-          let:d
-        >
-          <path class="avglinegraph" {d} />
-        </Pancake.SvgLine>
-      </Pancake.Svg>
-    </Pancake.Chart>
-  </div>
-{/if}
+          <Pancake.SvgLine
+            data={$averageResults}
+            x={(d) => d.myX}
+            y={(d) => d.myY}
+            let:d
+          >
+            <path class="avglinegraph" {d} />
+          </Pancake.SvgLine>
+        </Pancake.Svg>
+      </Pancake.Chart>
+    </div>
+  {/if}
+</div>
 
 <style>
   .chart {

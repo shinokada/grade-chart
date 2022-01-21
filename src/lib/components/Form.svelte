@@ -1,20 +1,25 @@
 <script>
   import {
-    // averageStore,
+    // averageScores,
     studentNameStore,
     titleStore,
     studentResults,
     averageResults,
+    nameStore,
+    averageScoresFrappe,
+    studentScoresFrappe,
   } from "../../stores/dataStore";
 
   // let data;
-  export let googlesheet;
-  export let studentid;
-  export let itemdata = [1];
-  export let error;
-  let averageStore;
+  let googlesheet =
+    "https://docs.google.com/spreadsheets/d/1hoFkfiZ7A-KwTZZHvS0njLfNwhHiTk2lTWFPiF1YCF0/edit#gid=2059040949";
+  let sheetName = "test2";
+  let studentid = "f3ef004cd0214287811c8cf697846f33";
+  let itemdata = [1];
+  let error;
+  let averageScores;
   let studentObj;
-  let nameStore;
+  let names;
   let title;
   // export let test_names = [];
 
@@ -23,35 +28,54 @@
       // const id = studentid;
       const googleid = googlesheet.split("/")[5];
       const response = await fetch(
-        `https://opensheet-okadashinichi.vercel.app/${googleid}/test2`
+        `https://opensheet-okadashinichi.vercel.app/${googleid}/${sheetName}`
       );
       const data = await response.json();
-      nameStore = data[0];
-      console.log("nameStore: ", nameStore);
+      console.log("data", data);
+      // all the test names, Func P1, Geo P2, etc
+      // data is an array and the first one has all the names, and Name
+      names = data[0];
+      const namesLength = Object.keys(names).length;
+      console.log(typeof namesLength);
+      console.log(namesLength);
+      const testNames = Object.entries(names)
+        .slice(0, namesLength - 2)
+        .map((entry) => entry[1]);
+      nameStore.set(testNames);
+      console.log("testNames in Form: ", testNames);
       // title
-      titleStore.set(nameStore["Name"]);
-      // console.log("title: ", title);
-      averageStore = data[1];
+      titleStore.set(names["Name"]);
+      // console.log("title in Form: ", title);
+      // The second item of data array has the averages
+      averageScores = data[1];
       const [studentObj] = data.filter((item) => item.id === studentid);
       // itemStore.set(first);
-      console.log("studentObj: ", studentObj);
+      // student results, name and ID
+      // console.log("studentObj in Form: ", studentObj);
       studentNameStore.set(studentObj["Name"]);
 
-      const avgpoints = Object.keys(nameStore).map((key, index) => ({
+      // for Frappe
+      studentScoresFrappe.set(studentObj);
+      averageScoresFrappe.set(averageScores);
+
+      // for Pancake
+      const avgpoints = Object.keys(names).map((key, index) => ({
         myX: +key,
-        myY: +averageStore[key],
+        myY: +averageScores[key],
       }));
       avgpoints.splice(-2);
       averageResults.set(avgpoints);
-      console.log("averageResults: ", $averageResults);
+      // Average results, 45, 56 etc.
+      // console.log("averageResults in Form: ", $averageResults);
 
-      const points = Object.keys(nameStore).map((key, index) => ({
+      const points = Object.keys(names).map((key, index) => ({
         myX: +key,
         myY: +studentObj[key],
       }));
       points.splice(-2);
+      // students results, 53, 65, etc
       studentResults.set(points);
-      console.log("studentResults: ", $studentResults);
+      console.log("studentResults in Form: ", $studentResults);
     } catch (err) {
       error = err;
     }
@@ -73,6 +97,24 @@
           name="googlesheet"
           bind:value={googlesheet}
           placeholder="Google sheet URL"
+          required
+          class="mt-1
+        block
+        w-full
+        rounded-md
+        border-gray-300
+        shadow-sm
+        focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        />
+      </label>
+
+      <label class="block" for="googlesheet">
+        <span class="text-gray-700">Sheet Name: </span>
+        <input
+          type="text"
+          name="sheetName"
+          bind:value={sheetName}
+          placeholder="Sheet Name"
           required
           class="mt-1
         block
