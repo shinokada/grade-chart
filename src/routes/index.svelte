@@ -13,9 +13,7 @@
 </script>
 
 <h1 class="font-bold text-indigo-500">Hello</h1>
-
+<Form />
 {#if $studentResults && $averageResults}
   <Frappe />
-{:else}
-  <Form />
 {/if}

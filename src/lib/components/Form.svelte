@@ -14,7 +14,7 @@
   let googlesheet =
     "https://docs.google.com/spreadsheets/d/1hoFkfiZ7A-KwTZZHvS0njLfNwhHiTk2lTWFPiF1YCF0/edit#gid=2059040949";
   let sheetName = "test2";
-  let studentid = "f3ef004cd0214287811c8cf697846f33";
+  let studentid;
   let itemdata = [1];
   let error;
   let averageScores;
@@ -55,7 +55,11 @@
       studentNameStore.set(studentObj["Name"]);
 
       // for Frappe
-      studentScoresFrappe.set(studentObj);
+      console.log("studentScoresFrappe in form", studentObj);
+      const studentScores = Object.entries(studentObj)
+        .slice(0, namesLength - 2)
+        .map((entry) => entry[1]);
+      studentScoresFrappe.set(studentScores);
       averageScoresFrappe.set(averageScores);
 
       // for Pancake
@@ -75,7 +79,7 @@
       points.splice(-2);
       // students results, 53, 65, etc
       studentResults.set(points);
-      console.log("studentResults in Form: ", $studentResults);
+      // console.log("studentResults in Form: ", $studentResults);
     } catch (err) {
       error = err;
     }
