@@ -8,3 +8,4 @@ export const averageResults = writable()
 export const nameStore = writable()
 export const averageScoresFrappe = writable()
 export const studentScoresFrappe = writable()
+export const user = writable(false);
